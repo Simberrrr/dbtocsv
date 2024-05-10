@@ -1,4 +1,5 @@
 import pyodbc 
+import csv
 SERVER = 'BrucePC\SQLEXPRESS'
 DATABASE = 'AdventureWorksLT2022'
 connectionString = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={SERVER};DATABASE={DATABASE};Encrypt=no;Trusted_connection=yes;'
@@ -20,5 +21,14 @@ OrderCount DESC;
 cursor = conn.cursor()
 cursor.execute(SQL_QUERY)
 records = cursor.fetchall()
-for r in records:
-    print(f"{r.CustomerID}\t{r.OrderCount}\t{r.CompanyName}")
+print ("CustomerID\tOrderCount\tCompanyName")
+with open('students.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+     
+    writer.writerow(["CustomerID", "OrderCount", "CompanyName"])
+    for r in records:
+        writer.writerow([r.CustomerID, r.OrderCount, r.CompanyName])
+        print(f"{r.CustomerID}\t       {r.OrderCount}\t       {r.CompanyName}")
+
+
+
